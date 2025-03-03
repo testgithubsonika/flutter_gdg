@@ -4,7 +4,7 @@ void main() {
   runApp(const MyApp());
 }
 
-/// Root widget with theme setup
+/// Root widget with dark theme
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
@@ -13,34 +13,32 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Namer App',
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        useMaterial3: true,
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepOrange),
+      theme: ThemeData.dark().copyWith(
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.redAccent),
       ),
       home: const MyHomePage(),
     );
   }
 }
 
-/// Home page UI
+/// Home Page with button to navigate to Contact Details
 class MyHomePage extends StatelessWidget {
   const MyHomePage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final Color primaryColor = Theme.of(context).colorScheme.primary; // Match with Navbar
-
     return Scaffold(
+      backgroundColor: Colors.black,
       appBar: AppBar(
         title: const Text('Home Page'),
         centerTitle: true,
-        backgroundColor: primaryColor,
+        backgroundColor: Colors.black,
         foregroundColor: Colors.white,
       ),
       body: Center(
         child: SizedBox(
-          width: 250, // Optimized width
-          height: 60, // Optimized height
+          width: 250,
+          height: 60,
           child: ElevatedButton.icon(
             onPressed: () {
               Navigator.push(
@@ -49,12 +47,12 @@ class MyHomePage extends StatelessWidget {
               );
             },
             style: ElevatedButton.styleFrom(
-              backgroundColor: primaryColor, // Same as Navbar
-              foregroundColor: Colors.white, // Text/Icon color
+              backgroundColor: Colors.redAccent, // Red button
+              foregroundColor: Colors.white,
               shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(12), // Smooth edges
+                borderRadius: BorderRadius.circular(12),
               ),
-              elevation: 6, // 3D shadow effect
+              elevation: 6,
               padding: const EdgeInsets.symmetric(vertical: 15),
             ),
             icon: const Icon(Icons.contact_page, size: 28),
@@ -69,80 +67,96 @@ class MyHomePage extends StatelessWidget {
   }
 }
 
-/// Contact details page with enhanced UI
+/// Contact Details Page with 2x2 Grid
 class ContactDetailPage extends StatelessWidget {
   const ContactDetailPage({super.key});
 
+  final List<Map<String, String>> contacts = const [
+    {"name": "John Doe", "phone": "+1 234 567 890", "email": "johndoe@example.com"},
+    {"name": "Jane Smith", "phone": "+1 987 654 321", "email": "janesmith@example.com"},
+    {"name": "Robert Brown", "phone": "+1 555 111 222", "email": "robertbrown@example.com"},
+    {"name": "Emily White", "phone": "+1 666 777 888", "email": "emilywhite@example.com"},
+  ];
+
   @override
   Widget build(BuildContext context) {
-    final Color primaryColor = Theme.of(context).colorScheme.primary;
-
     return Scaffold(
+      backgroundColor: Colors.black,
       appBar: AppBar(
         title: const Text('Contact Details'),
         centerTitle: true,
-        backgroundColor: primaryColor,
+        backgroundColor: Colors.black,
         foregroundColor: Colors.white,
       ),
       body: Padding(
         padding: const EdgeInsets.all(20.0),
-        child: Card(
-          elevation: 5,
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-          child: Padding(
-            padding: const EdgeInsets.all(20.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                const ContactInfoRow(icon: Icons.person, label: 'Name:', value: 'John Doe'),
-                const ContactInfoRow(icon: Icons.phone, label: 'Phone:', value: '+1 234 567 890'),
-                const ContactInfoRow(icon: Icons.email, label: 'Email:', value: 'johndoe@example.com'),
-                const SizedBox(height: 20),
-                Align(
-                  alignment: Alignment.centerRight,
-                  child: ElevatedButton.icon(
-                    onPressed: () => Navigator.pop(context),
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: primaryColor, // Same as AppBar
-                      foregroundColor: Colors.white, // Text color
-                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-                    ),
-                    icon: const Icon(Icons.arrow_back),
-                    label: const Text('Back to Home'),
-                  ),
+        child: Column(
+          children: [
+            Expanded(
+              child: GridView.builder(
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 2, // 2x2 Grid Layout
+                  crossAxisSpacing: 16,
+                  mainAxisSpacing: 16,
+                  childAspectRatio: 1.1, // Adjust card size
                 ),
-              ],
+                itemCount: contacts.length,
+                itemBuilder: (context, index) {
+                  final contact = contacts[index];
+                  return ContactCard(
+                    name: contact["name"]!,
+                    phone: contact["phone"]!,
+                    email: contact["email"]!,
+                  );
+                },
+              ),
             ),
-          ),
+            const SizedBox(height: 20),
+            ElevatedButton.icon(
+              onPressed: () => Navigator.pop(context),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.redAccent, // Red Button
+                foregroundColor: Colors.white,
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+              ),
+              icon: const Icon(Icons.arrow_back),
+              label: const Text('Back to Home'),
+            ),
+          ],
         ),
       ),
     );
   }
 }
 
-/// A reusable row widget for displaying contact info
-class ContactInfoRow extends StatelessWidget {
-  final IconData icon;
-  final String label;
-  final String value;
+/// Contact Card Widget for each person
+class ContactCard extends StatelessWidget {
+  final String name;
+  final String phone;
+  final String email;
 
-  const ContactInfoRow({super.key, required this.icon, required this.label, required this.value});
+  const ContactCard({super.key, required this.name, required this.phone, required this.email});
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 8.0),
-      child: Row(
-        children: [
-          Icon(icon, color: Theme.of(context).colorScheme.primary),
-          const SizedBox(width: 10),
-          Text(label, style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-          const SizedBox(width: 5),
-          Expanded(
-            child: Text(value, style: const TextStyle(fontSize: 18), overflow: TextOverflow.ellipsis),
-          ),
-        ],
+    return Card(
+      color: Colors.grey[900],
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+      elevation: 4,
+      child: Padding(
+        padding: const EdgeInsets.all(12.0),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            const Icon(Icons.person, size: 50, color: Colors.redAccent),
+            const SizedBox(height: 10),
+            Text(name, style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white)),
+            const SizedBox(height: 5),
+            Text(phone, style: const TextStyle(fontSize: 16, color: Colors.white70)),
+            const SizedBox(height: 5),
+            Text(email, style: const TextStyle(fontSize: 14, color: Colors.white60), textAlign: TextAlign.center),
+          ],
+        ),
       ),
     );
   }
