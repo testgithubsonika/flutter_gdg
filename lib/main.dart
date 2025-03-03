@@ -4,14 +4,13 @@ void main() {
   runApp(const MyApp());
 }
 
-/// Root widget with dark theme
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Namer App',
+      title: 'Contact App',
       debugShowCheckedModeBanner: false,
       theme: ThemeData.dark().copyWith(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.redAccent),
@@ -21,7 +20,6 @@ class MyApp extends StatelessWidget {
   }
 }
 
-/// Home Page with button to navigate to Contact Details
 class MyHomePage extends StatelessWidget {
   const MyHomePage({super.key});
 
@@ -30,10 +28,13 @@ class MyHomePage extends StatelessWidget {
     return Scaffold(
       backgroundColor: Colors.black,
       appBar: AppBar(
-        title: const Text('Home Page'),
+        title: const Text(
+          'Home Page',
+          style: TextStyle(color: Colors.redAccent, fontWeight: FontWeight.bold), // Title in Red
+        ),
         centerTitle: true,
         backgroundColor: Colors.black,
-        foregroundColor: Colors.white,
+        foregroundColor: Colors.redAccent, // Red color for icons
       ),
       body: Center(
         child: SizedBox(
@@ -47,18 +48,18 @@ class MyHomePage extends StatelessWidget {
               );
             },
             style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.redAccent, // Red button
+              backgroundColor: Colors.redAccent,
               foregroundColor: Colors.white,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(12),
               ),
-              elevation: 6,
-              padding: const EdgeInsets.symmetric(vertical: 15),
+              elevation: 5,
+              padding: const EdgeInsets.symmetric(vertical: 14),
             ),
             icon: const Icon(Icons.contact_page, size: 28),
             label: const Text(
               'Contact Details',
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+              style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
             ),
           ),
         ),
@@ -67,7 +68,6 @@ class MyHomePage extends StatelessWidget {
   }
 }
 
-/// Contact Details Page with 2x2 Grid
 class ContactDetailPage extends StatelessWidget {
   const ContactDetailPage({super.key});
 
@@ -83,44 +83,43 @@ class ContactDetailPage extends StatelessWidget {
     return Scaffold(
       backgroundColor: Colors.black,
       appBar: AppBar(
-        title: const Text('Contact Details'),
+        title: const Text(
+          'Contact Details',
+          style: TextStyle(color: Colors.redAccent, fontWeight: FontWeight.bold), // Title in Red
+        ),
         centerTitle: true,
         backgroundColor: Colors.black,
-        foregroundColor: Colors.white,
+        foregroundColor: Colors.redAccent, // Red color for icons
       ),
       body: Padding(
-        padding: const EdgeInsets.all(20.0),
+        padding: const EdgeInsets.symmetric(horizontal: 50, vertical: 40),
         child: Column(
           children: [
             Expanded(
-              child: GridView.builder(
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2, // 2x2 Grid Layout
-                  crossAxisSpacing: 16,
-                  mainAxisSpacing: 16,
-                  childAspectRatio: 1.1, // Adjust card size
-                ),
-                itemCount: contacts.length,
-                itemBuilder: (context, index) {
-                  final contact = contacts[index];
-                  return ContactCard(
-                    name: contact["name"]!,
-                    phone: contact["phone"]!,
-                    email: contact["email"]!,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: contacts.map((contact) {
+                  return Expanded(
+                    child: ContactCard(
+                      name: contact["name"]!,
+                      phone: contact["phone"]!,
+                      email: contact["email"]!,
+                    ),
                   );
-                },
+                }).toList(),
               ),
             ),
             const SizedBox(height: 20),
             ElevatedButton.icon(
               onPressed: () => Navigator.pop(context),
               style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.redAccent, // Red Button
+                backgroundColor: Colors.redAccent,
                 foregroundColor: Colors.white,
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 35),
               ),
               icon: const Icon(Icons.arrow_back),
-              label: const Text('Back to Home'),
+              label: const Text('Back to Home', style: TextStyle(fontSize: 18)),
             ),
           ],
         ),
@@ -129,7 +128,6 @@ class ContactDetailPage extends StatelessWidget {
   }
 }
 
-/// Contact Card Widget for each person
 class ContactCard extends StatelessWidget {
   final String name;
   final String phone;
@@ -144,17 +142,21 @@ class ContactCard extends StatelessWidget {
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       elevation: 4,
       child: Padding(
-        padding: const EdgeInsets.all(12.0),
+        padding: const EdgeInsets.all(20),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             const Icon(Icons.person, size: 50, color: Colors.redAccent),
             const SizedBox(height: 10),
-            Text(name, style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white)),
-            const SizedBox(height: 5),
-            Text(phone, style: const TextStyle(fontSize: 16, color: Colors.white70)),
-            const SizedBox(height: 5),
-            Text(email, style: const TextStyle(fontSize: 14, color: Colors.white60), textAlign: TextAlign.center),
+            Text(
+              name,
+              style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.white),
+              textAlign: TextAlign.center,
+            ),
+            const SizedBox(height: 8),
+            Text(phone, style: const TextStyle(fontSize: 14, color: Colors.white70)),
+            const SizedBox(height: 6),
+            Text(email, style: const TextStyle(fontSize: 13, color: Colors.white60), textAlign: TextAlign.center),
           ],
         ),
       ),
