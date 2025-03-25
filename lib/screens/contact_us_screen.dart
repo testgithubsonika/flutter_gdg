@@ -1,14 +1,23 @@
 import 'package:flutter/material.dart';
 
-/// Contact details page with four contacts in a row
+class ContactUsScreen extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: Text("Contact Us")),
+      body: ContactDetailPage(),
+    );
+  }
+}
+
 class ContactDetailPage extends StatelessWidget {
   const ContactDetailPage({super.key});
 
   final List<Map<String, String>> contacts = const [
-    {"name": "John Doe", "phone": "+1 234 567 890", "email": "johndoe@example.com"},
-    {"name": "Jane Smith", "phone": "+1 987 654 321", "email": "janesmith@example.com"},
-    {"name": "Robert Brown", "phone": "+1 555 111 222", "email": "robertbrown@example.com"},
-    {"name": "Emily White", "phone": "+1 666 777 888", "email": "emilywhite@example.com"},
+    {"name": "Dhino kevin", "phone": "+1 234 567 890", "email": "kevin@example.com"},
+    {"name": "Harshadeepa M.n", "phone": "+1 987 654 321", "email": "Harshadeepa@example.com"},
+    {"name": "Sujhita", "phone": "+1 555 111 222", "email": "Sujhita@example.com"},
+    {"name": "Sonika singh tomar ", "phone": "+1 666 777 888", "email": "Sonika@example.com"},
   ];
 
   @override
@@ -26,24 +35,24 @@ class ContactDetailPage extends StatelessWidget {
         padding: const EdgeInsets.all(20.0),
         child: Column(
           children: [
-            /// Contacts in a Grid (4 in a row)
+            /// Contacts covering the whole width but in a column
             Expanded(
-              child: GridView.builder(
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 4, // 4 items per row
-                  crossAxisSpacing: 20,
-                  mainAxisSpacing: 20,
-                  childAspectRatio: 0.75, // Maintain square ratio
-                ),
-                itemCount: contacts.length,
-                itemBuilder: (context, index) {
-                  final contact = contacts[index];
-                  return ContactCard(
-                    name: contact["name"]!,
-                    phone: contact["phone"]!,
-                    email: contact["email"]!,
-                  );
-                },
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: contacts.map((contact) {
+                      return Expanded(
+                        child: ContactCard(
+                          name: contact["name"]!,
+                          phone: contact["phone"]!,
+                          email: contact["email"]!,
+                        ),
+                      );
+                    }).toList(),
+                  ),
+                ],
               ),
             ),
 
@@ -81,7 +90,8 @@ class ContactCard extends StatelessWidget {
       color: Colors.grey[900],
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       elevation: 4,
-      child: Padding(
+      child: Container(
+        width: double.infinity,
         padding: const EdgeInsets.all(15),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,

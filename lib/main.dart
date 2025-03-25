@@ -1,77 +1,97 @@
 import 'package:flutter/material.dart';
-import 'screens/contact_page.dart'; // Import Contact Page
-import 'widgets/footer.dart'; // Import Footer
+import 'screens/features_screen.dart';
+import 'screens/support_screen.dart';
+import 'screens/documentation_screen.dart';
+import 'screens/getting_started_screen.dart';
+import 'screens/contact_us_screen.dart';
+import 'screens/technology_screen.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
-
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Contact App',
       debugShowCheckedModeBanner: false,
+      title: 'CyberPunks',
       theme: ThemeData.dark().copyWith(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.redAccent),
+        scaffoldBackgroundColor: Colors.black,
+        primaryColor: Colors.blueGrey[900],
+        textTheme: TextTheme(
+          bodyLarge: TextStyle(color: Colors.white),
+          bodyMedium: TextStyle(color: Colors.white70),
+        ),
+        elevatedButtonTheme: ElevatedButtonThemeData(
+          style: ElevatedButton.styleFrom(
+            backgroundColor: Colors.blueGrey[800],
+            foregroundColor: Colors.white,
+            padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+          ),
+        ),
       ),
-      home: const HomeScreen(),
+      initialRoute: '/',
+      routes: {
+        '/': (context) => HomeScreen(),
+        '/features': (context) => FeaturesScreen(),
+        '/support': (context) => SupportScreen(),
+        '/documentation': (context) => DocumentationScreen(),
+        '/getting-started': (context) => GettingStartedScreen(),
+        '/contact-us': (context) => ContactUsScreen(),
+        '/technology': (context) => TechnologyScreen(),
+      },
     );
   }
 }
 
 class HomeScreen extends StatelessWidget {
-  const HomeScreen({super.key});
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.black,
-      appBar: AppBar(
-        title: const Text(
-          'Home Page',
-          style: TextStyle(color: Colors.redAccent, fontWeight: FontWeight.bold),
-        ),
-        centerTitle: true,
-        backgroundColor: Colors.black,
-        foregroundColor: Colors.redAccent,
-      ),
+      appBar: AppBar(title: Text("CyberPunks")),
       body: Column(
         children: [
           Expanded(
             child: Center(
-              child: SizedBox(
-                width: 250,
-                height: 60,
-                child: ElevatedButton.icon(
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => const ContactDetailPage()),
-                    );
-                  },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.redAccent,
-                    foregroundColor: Colors.white,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    elevation: 5,
-                    padding: const EdgeInsets.symmetric(vertical: 14),
-                  ),
-                  icon: const Icon(Icons.contacts, size: 28),
-                  label: const Text(
-                    'Contact Details',
-                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
-                  ),
-                ),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  _buildButton(context, "Features", "/features"),
+                  _buildButton(context, "Support", "/support"),
+                  _buildButton(context, "Documentation", "/documentation"),
+                  _buildButton(context, "Getting Started", "/getting-started"),
+                  _buildButton(context, "Contact Us", "/contact-us"),
+                  _buildButton(context, "Technology", "/technology"),
+                ],
               ),
             ),
           ),
-          const Footer(), // Footer at the bottom
+          _buildFooter(),
         ],
+      ),
+    );
+  }
+
+  Widget _buildButton(BuildContext context, String text, String route) {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: ElevatedButton(
+        onPressed: () => Navigator.pushNamed(context, route),
+        child: Text(text),
+      ),
+    );
+  }
+
+  Widget _buildFooter() {
+    return Container(
+      padding: EdgeInsets.all(12),
+      color: Colors.blueGrey[900],
+      child: Center(
+        child: Text(
+          "© 2025 CyberPunks | All Rights Reserved",
+          style: TextStyle(color: Colors.white70, fontSize: 12),
+        ),
       ),
     );
   }

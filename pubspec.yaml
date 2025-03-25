@@ -25,3 +25,8 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
+
+# flutter:
+#   assets:
+#     - assets/guide.pdf
+#     - assets/help.html
